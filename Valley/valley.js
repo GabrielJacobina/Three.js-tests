@@ -1,6 +1,7 @@
 let scene, camera, renderer;
 
 function init() {
+
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 45, 30000);
@@ -12,20 +13,20 @@ function init() {
 
     window.addEventListener('resize', onWindowResize);
 
+
     let controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.minDistance = 500;
     controls.maxDistance = 1500;
     controls.rotateSpeed = 0.41;
     controls.update();
-    
 
     let materialArray= [];
-    let texture_ft = new THREE.TextureLoader().load('./img/arid2_ft.jpg');
-    let texture_bk = new THREE.TextureLoader().load('./img/arid2_bk.jpg');
-    let texture_up = new THREE.TextureLoader().load('./img/arid2_up.jpg');
-    let texture_dn = new THREE.TextureLoader().load('./img/arid2_dn.jpg');
-    let texture_rt = new THREE.TextureLoader().load('./img/arid2_rt.jpg');
-    let texture_lf = new THREE.TextureLoader().load('./img/arid2_lf.jpg');
+    let texture_ft = new THREE.TextureLoader().load('./img/valley_ft.jpg');
+    let texture_bk = new THREE.TextureLoader().load('./img/valley_bk.jpg');
+    let texture_up = new THREE.TextureLoader().load('./img/valley_up.jpg');
+    let texture_dn = new THREE.TextureLoader().load('./img/valley_dn.jpg');
+    let texture_rt = new THREE.TextureLoader().load('./img/valley_rt.jpg');
+    let texture_lf = new THREE.TextureLoader().load('./img/valley_lf.jpg');
 
     materialArray.push(new THREE.MeshBasicMaterial({map: texture_ft}));
     materialArray.push(new THREE.MeshBasicMaterial({map: texture_bk}));
@@ -38,9 +39,9 @@ function init() {
         materialArray[i].side = THREE.BackSide;
       }
 
-    let skyboxGeo = new THREE.BoxGeometry(10000,10000,10000);
-    let skybox = new THREE.Mesh(skyboxGeo, materialArray);
-    scene.add(skybox);
+    let valleyGeo = new THREE.BoxGeometry(10000, 10000, 10000);
+    let valley = new THREE.Mesh(valleyGeo, materialArray);
+    scene.add(valley);
 
     animate();
 
@@ -48,13 +49,10 @@ function init() {
         renderer.setSize( window.innerWidth / window.innerHeight );
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-      };
+    };
 
-      
     function animate() {
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
     }
 }
-
-init();
