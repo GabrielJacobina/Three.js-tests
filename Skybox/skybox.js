@@ -3,15 +3,20 @@ let scene, camera, renderer;
 function init() {
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,45,30000);
+    camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 45, 30000);
     camera.position.set(-900,-200,-900);
 
     renderer = new THREE.WebGLRenderer({antialias:true});
     renderer.setSize(window.innerWidth,window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    let controls = new THREE.OrbitControls(camera);
-    controls.addEventListener('change', renderer);
+    window.addEventListener('resize', onWindowResize);
+
+    let controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.minDistance = 500;
+    controls.maxDistance = 1500;
+    controls.rotateSpeed = 0.41;
+    controls.update();
     
 
     let materialArray= [];
@@ -29,13 +34,27 @@ function init() {
     materialArray.push(new THREE.MeshBasicMaterial({map: texture_rt}));
     materialArray.push(new THREE.MeshBasicMaterial({map: texture_lf}));
 
+    for( let i = 0; i < 6; i++ ) {
+        materialArray[i].side = THREE.BackSide;
+      }
+
     let skyboxGeo = new THREE.BoxGeometry(10000,10000,10000);
     let skybox = new THREE.Mesh(skyboxGeo, materialArray);
     scene.add(skybox);
+
+    animate();
+
+    function onWindowResize() {
+        renderer.setSize( window.innerWidth / window.innerHeight );
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+      };
+
+      
+    function animate() {
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    }
 }
 
-function animate() {
-    renderer.render(scene, camera);
-    requestAnimationFrame(animate);
-}
 init();
